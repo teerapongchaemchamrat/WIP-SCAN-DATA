@@ -6,7 +6,7 @@ Imports OfficeOpenXml
 
 Public Class Form1
 
-    Dim connection As New SqlConnection("Data Source=192.168.10.114\APPSERVER;Initial Catalog=App_PUR;User ID=sa;Password=Cyf027065055")
+    Dim connection As New SqlConnection("Data Source=192.168.10.114\APPSERVER;Initial Catalog=App_PUR;User ID=sa;Password=XXXXXXXXXX")
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Dim result As DialogResult = MessageBox.Show("Are you sure you want to exit?", "Confirm Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
@@ -15,22 +15,6 @@ Public Class Form1
         End If
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ''TODO: This line of code loads data into the 'App_PURDataSet.Scan_WIP' table. You can move, or remove it, as needed.
-        ''Me.Scan_WIPTableAdapter.Fill(Me.App_PURDataSet.Scan_WIP)
-        'Dim command As New SqlCommand("SELECT DISTINCT Item FROM Scan_WIP", connection)
-        'Dim adapter As New SqlDataAdapter(command)
-        'Dim table As New DataTable()
-        'adapter.Fill(table)
-
-        ''Dim emptyRow As DataRow = table.NewRow()
-        ''emptyRow("Item") = ""
-        ''table.Rows.InsertAt(emptyRow, 0)
-        'ComboBox1.Items.Clear()
-
-        'ComboBox1.DataSource = table
-        'ComboBox1.DisplayMember = "Item"
-        'ComboBox1.ValueMember = "Item"
-
     End Sub
 
     Public Sub FilterData(valueToSearch As String)
@@ -42,19 +26,12 @@ Public Class Form1
 
         adapter.Fill(table)
         DataGridView1.DataSource = table
-
-        'DataGridView1.RowTemplate.Height = 50
-
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim selectedDate As DateTime = DateTimePicker1.Value
         Dim dateString As String = selectedDate.ToString("yyyy-MM-dd")
-
         FilterData(dateString)
-        'DataGridView1.DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        'DataGridView1.RowTemplate.Height = 150
-
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
@@ -69,9 +46,6 @@ Public Class Form1
 
         adapter.Fill(table)
         DataGridView1.DataSource = table
-
-        'DataGridView1.DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        'DataGridView1.RowTemplate.Height = 150
     End Sub
 
     Private Sub ExportToExcel()
