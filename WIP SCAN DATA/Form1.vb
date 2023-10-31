@@ -7,7 +7,7 @@ Imports System.Globalization
 
 Public Class Form1
 
-    Dim connection As New SqlConnection("Data Source=192.168.10.114\APPSERVER;Initial Catalog=App_PUR;User ID=sa;Password=XXXXXXXXXX")
+    Dim connection As New SqlConnection("Data Source=192.168.10.114\APPSERVER;Initial Catalog=App_PUR;User ID=sa;Password=Cyf027065055")
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Dim result As DialogResult = MessageBox.Show("Are you sure you want to exit?", "Confirm Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
@@ -47,8 +47,23 @@ Public Class Form1
         Dim searchQuery As String = "exec WIP_searchDate '" & valueToSearch & "'"
         Dim command As New SqlCommand(searchQuery, connection)
 
-        adapter.Fill(table)
-        DataGridView1.DataSource = table
+        Try
+            connection.Open()
+            Dim reader As SqlDataReader = command.ExecuteReader()
+
+            If reader.HasRows Then
+                Dim table As New DataTable()
+
+                ' Populate DataTable with data from SqlDataReader
+                table.Load(reader)
+                DataGridView1.DataSource = table
+                DataGridView1.Columns(4).DefaultCellStyle.Format = "dd-MM-yyyy HH:mm:ss.fff"
+            End If
+        Catch ex As Exception
+            ' Handle exceptions
+        Finally
+            connection.Close()
+        End Try
 
         'DataGridView1.RowTemplate.Height = 50
 
@@ -62,19 +77,6 @@ Public Class Form1
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         ExportToExcel()
-    End Sub
-
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        Dim Query As String = "SELECT * FROM Scan_WIP"
-        Dim command As New SqlCommand(Query, connection)
-        Dim adapter As New SqlDataAdapter(command)
-        Dim table As New DataTable()
-
-        adapter.Fill(table)
-        DataGridView1.DataSource = table
-
-        'DataGridView1.DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        'DataGridView1.RowTemplate.Height = 150
     End Sub
 
     Private Sub ExportToExcel()
@@ -205,7 +207,7 @@ Public Class Form1
 
         Next
 
-        'FilterData(DateString)
+        FilterData(DateString)
 
     End Sub
 

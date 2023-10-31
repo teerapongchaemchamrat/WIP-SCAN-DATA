@@ -149,12 +149,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Delete.Designer.vb">
-      <DependentUpon>Delete.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Delete.vb">
-      <SubType>Form</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Add.resx">
