@@ -7,7 +7,7 @@ Imports System.Globalization
 
 Public Class Form1
 
-    Dim connection As New SqlConnection("Data Source=192.168.10.114\APPSERVER;Initial Catalog=App_PUR;User ID=sa;Password=Cyf027065055")
+    Dim connection As New SqlConnection("Data Source=192.168.10.114\APPSERVER;Initial Catalog=App_PUR;User ID=sa;Password=XXXXXXXXXX")
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Dim result As DialogResult = MessageBox.Show("Are you sure you want to exit?", "Confirm Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
@@ -16,8 +16,6 @@ Public Class Form1
         End If
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'TODO: This line of code loads data into the 'App_PURDataSet1.Scan_WIP' table. You can move, or remove it, as needed.
-        'Me.Scan_WIPTableAdapter1.Fill(Me.App_PURDataSet1.Scan_WIP)
         ''TODO: This line of code loads data into the 'App_PURDataSet.Scan_WIP' table. You can move, or remove it, as needed.
         ''Me.Scan_WIPTableAdapter.Fill(Me.App_PURDataSet.Scan_WIP)
         'Dim command As New SqlCommand("SELECT DISTINCT Item FROM Scan_WIP", connection)
@@ -29,6 +27,7 @@ Public Class Form1
         ''emptyRow("Item") = ""
         ''table.Rows.InsertAt(emptyRow, 0)
         'ComboBox1.Items.Clear()
+
         'ComboBox1.DataSource = table
         'ComboBox1.DisplayMember = "Item"
         'ComboBox1.ValueMember = "Item"
@@ -48,23 +47,8 @@ Public Class Form1
         Dim searchQuery As String = "exec WIP_searchDate '" & valueToSearch & "'"
         Dim command As New SqlCommand(searchQuery, connection)
 
-
-        Try
-            connection.Open()
-            Dim reader As SqlDataReader = command.ExecuteReader()
-
-            If reader.HasRows Then
-                Dim table As New DataTable()
-                ' Populate DataTable with data from SqlDataReader
-                table.Load(reader)
-                DataGridView1.DataSource = table
-                DataGridView1.Columns(4).DefaultCellStyle.Format = "dd-MM-yyyy HH:mm:ss"
-            End If
-        Catch ex As Exception
-            ' Handle exceptions
-        Finally
-            connection.Close()
-        End Try
+        adapter.Fill(table)
+        DataGridView1.DataSource = table
 
         'DataGridView1.RowTemplate.Height = 50
 
@@ -73,16 +57,26 @@ Public Class Form1
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim selectedDate As DateTime = DateTimePicker1.Value
         Dim dateString As String = selectedDate.ToString("yyyy-MM-dd")
-
         FilterData(dateString)
-        'DataGridView1.DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        'DataGridView1.RowTemplate.Height = 150
-
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         ExportToExcel()
     End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Dim Query As String = "SELECT * FROM Scan_WIP"
+        Dim command As New SqlCommand(Query, connection)
+        Dim adapter As New SqlDataAdapter(command)
+        Dim table As New DataTable()
+
+        adapter.Fill(table)
+        DataGridView1.DataSource = table
+
+        'DataGridView1.DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        'DataGridView1.RowTemplate.Height = 150
+    End Sub
+
     Private Sub ExportToExcel()
         Dim pictureColumnIndex As Integer = -1
         Dim cameraColumnIndex As Integer = -1
