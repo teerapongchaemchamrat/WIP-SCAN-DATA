@@ -3,7 +3,7 @@
 Public Class Add
     Private Sub SaveButton_Click(sender As Object, e As EventArgs) Handles SaveButton.Click
 
-        Dim connectionString As String = "Data Source=192.168.10.114\APPSERVER;Initial Catalog=App_PUR;User ID=sa;Password=Cyf027065055"
+        Dim connectionString As String = "Data Source=192.168.10.114\APPSERVER;Initial Catalog=App_PUR;User ID=sa;Password=XXXXXXXXXXXX"
         Dim query As String = "INSERT INTO Scan_WIP (Job, Item, Quantity, Recipient) VALUES (@job, @item, @qty, @name)"
 
         If String.IsNullOrEmpty(TextBox1.Text) OrElse
